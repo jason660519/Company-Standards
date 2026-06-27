@@ -9,7 +9,20 @@
 | 標準 | 說明 |
 |------|------|
 | [standards/file-naming-standards.md](standards/file-naming-standards.md) | 檔名與目錄命名規約 |
-| [standards/skills-management-standard.md](standards/skills-management-standard.md) | Agent skills 的單一真相來源 + sync 機制 |
+| [standards/git-workflow-standard.md](standards/git-workflow-standard.md) | branch / commit / push / PR 規範 + SemVer / release 政策 |
+| [standards/adr-standard.md](standards/adr-standard.md) | Architecture Decision Record 流程 |
+| [standards/api-design-standard.md](standards/api-design-standard.md) | HTTP / REST API 設計準則 |
+| [standards/editorconfig-standard.md](standards/editorconfig-standard.md) | EditorConfig 共用設定（canonical：根 [`.editorconfig`](.editorconfig)） |
+| [standards/skills-create-and-management-standard.md](standards/skills-create-and-management-standard.md) | Agent skills 的建立規範 + 單一真相來源 + sync 機制 |
+
+## 共用資產（consumable）
+
+| 路徑 | 內容 |
+|------|------|
+| [`.editorconfig`](.editorconfig) | canonical EditorConfig，複製到專案根 |
+| [`shared/scripts/sync_skills.py`](shared/scripts/sync_skills.py) | 通用 skills sync script（無依賴、跨 OS） |
+| [`templates/repo-template/`](templates/repo-template/) | 新專案起手骨架 |
+| [`templates/adr/ADR-template.md`](templates/adr/ADR-template.md) | ADR 模板 |
 
 ## 怎麼在專案裡使用（reference, not copy）
 

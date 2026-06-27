@@ -2,6 +2,19 @@
 
 採語意化版本（SemVer）。每次發布請更新本檔與 [`VERSION`](VERSION)，並打對應 git tag `vX.Y.Z`。
 
+## [0.3.0] - 2026-06-28
+
+### Added
+- `standards/git-workflow-standard.md`：branch / commit（Conventional Commits）/ push / PR 規範與 SemVer / release 政策。
+- `standards/adr-standard.md`：ADR 流程與生命週期；`templates/adr/ADR-template.md` 模板。
+- `standards/api-design-standard.md`：HTTP / REST API 設計準則。
+- `standards/editorconfig-standard.md` + 根 `.editorconfig`（canonical 共用設定）。
+- `shared/scripts/sync_skills.py`：通用 skills sync script（從各專案 local 提升為共用資產）。
+- `templates/repo-template/`：新專案起手骨架（CLAUDE.md / .gitignore / .pre-commit / PR template / ADR 與 skills 目錄結構）。
+
+### Changed
+- `skills-management-standard.md` → `skills-create-and-management-standard.md`，新增「建立新 skill」（命名、SKILL.md frontmatter、結構）一節。
+
 ## [0.2.0] - 2026-06-28
 
 ### Added
