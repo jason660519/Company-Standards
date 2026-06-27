@@ -75,7 +75,7 @@ repos:
 
 - 採語意化版本（SemVer）。標準有破壞性變更 → bump major。
 - 專案 pin 在某個 tag，主動決定何時升級；不會被動受影響。
-- 每次變更都要更新 `CHANGELOG.md` 與 `VERSION`，並打 git tag（`vX.Y.Z`）。
+- 每次變更都要更新 `CHANGELOG.md` 與 `VERSION`，並打 git tag（`vX.Y.Z`）。發版步驟見 [`RELEASING.md`](RELEASING.md)。
 
 ## 三層規約怎麼分（避免混淆）
 

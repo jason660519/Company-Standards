@@ -1,6 +1,11 @@
 # Changelog
 
-採語意化版本（SemVer）。每次發布請更新本檔與 [`VERSION`](VERSION)，並打對應 git tag `vX.Y.Z`。
+採語意化版本（SemVer）。每次發布請更新本檔與 [`VERSION`](VERSION)，並打對應 git tag `vX.Y.Z`。發版步驟見 [`RELEASING.md`](RELEASING.md)。
+
+## [Unreleased]
+
+### Added
+- `RELEASING.md`：發版 SOP（版本怎麼選、步驟、消費端如何跟上）。
 
 ## [0.4.0] - 2026-06-28
 
