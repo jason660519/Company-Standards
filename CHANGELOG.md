@@ -2,6 +2,14 @@
 
 採語意化版本（SemVer）。每次發布請更新本檔與 [`VERSION`](VERSION)，並打對應 git tag `vX.Y.Z`。
 
+## [0.4.0] - 2026-06-28
+
+### Added
+- `.pre-commit-hooks.yaml` + `hooks/sync_skills_check.py`：本 repo 現在是 pre-commit hook repo，專案可遠端引用 `sync-skills-check`（`repo: <url>` + `rev: v0.4.0`），不必各自複製 hook 腳本。hook 以使用方 repo 為 CWD 執行、無 skills 時自動跳過。
+
+### Changed
+- README「方式 B — 共用 pre-commit hooks」改為實際可用的引用範例。
+
 ## [0.3.0] - 2026-06-28
 
 ### Added

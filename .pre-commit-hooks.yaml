@@ -1,0 +1,7 @@
+- id: sync-skills-check
+  name: skills mirror in sync (.agents/skills -> .claude/skills)
+  description: Fail the commit if .claude/skills is not a fresh copy of .agents/skills.
+  entry: hooks/sync_skills_check.py
+  language: script
+  pass_filenames: false
+  files: ^\.(agents|claude)/skills/

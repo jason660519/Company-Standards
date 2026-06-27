@@ -57,17 +57,19 @@ skills 結構依 standards/skills-management-standard.md 實作。
 
 ### 方式 B — 共用 pre-commit hooks（可執行規則）
 
-可執行的檢查（如 skills sync 檢查）之後會以 pre-commit 遠端 repo 形式提供，專案只需在 `.pre-commit-config.yaml` 引用：
+本 repo 是 pre-commit hook repo（根有 `.pre-commit-hooks.yaml`）。專案只需在 `.pre-commit-config.yaml` 引用，不必各自複製 hook 腳本：
 
 ```yaml
 repos:
   - repo: https://github.com/jason660519/Company-Standards
-    rev: v0.2.0
+    rev: v0.4.0
     hooks:
-      - id: <hook-id>
+      - id: sync-skills-check   # .claude/skills 是否與 .agents/skills 一致
 ```
 
-（目前 hook 仍以各專案 `repo: local` 實作，後續版本會搬上來統一。）
+裝法：`uv tool install pre-commit && pre-commit install`。hook 以使用方 repo 為工作目錄執行，repo 沒有 `.agents/skills/` 時自動跳過。
+
+可用 hooks 見根目錄 [`.pre-commit-hooks.yaml`](.pre-commit-hooks.yaml)。
 
 ## 版本與相容性
 
