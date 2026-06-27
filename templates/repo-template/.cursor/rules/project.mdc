@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 <!-- Generated from AGENTS.md. Do not edit directly. -->
 <!-- Run: python3 scripts/sync_agent_instructions.py -->
 

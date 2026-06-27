@@ -1,6 +1,3 @@
-<!-- Generated from AGENTS.md. Do not edit directly. -->
-<!-- Run: python3 scripts/sync_agent_instructions.py -->
-
 # AGENTS.md
 
 專案層級規約，給 coding agent 與所有工程師遵守。

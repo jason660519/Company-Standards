@@ -1,3 +1,11 @@
+- id: sync-agent-instructions-check
+  name: agent instruction mirrors in sync (AGENTS.md -> tool-specific files)
+  description: Fail the commit if CLAUDE.md, GEMINI.md, or Cursor rules are not fresh mirrors of AGENTS.md.
+  entry: hooks/sync_agent_instructions_check.py
+  language: script
+  pass_filenames: false
+  files: ^(AGENTS\.md|CLAUDE\.md|GEMINI\.md|\.cursor/rules/project\.mdc)$
+
 - id: sync-skills-check
   name: skills mirror in sync (.agents/skills -> .claude/skills)
   description: Fail the commit if .claude/skills is not a fresh copy of .agents/skills.

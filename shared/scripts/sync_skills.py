@@ -11,8 +11,8 @@ instead of symlinks because symlinks are fragile across operating systems
 
 Run it whenever a skill under .agents/skills/ changes:
 
-    python scripts/sync_skills.py            # mirror canonical -> .claude/skills
-    python scripts/sync_skills.py --check    # verify in sync, exit 1 if not (for CI / pre-commit)
+    python3 scripts/sync_skills.py            # mirror canonical -> .claude/skills
+    python3 scripts/sync_skills.py --check    # verify in sync, exit 1 if not (for CI / pre-commit)
 
 Pure standard library, no dependencies, runs on macOS / Linux / Windows.
 """
@@ -46,6 +46,23 @@ def dirs_in_sync(a: Path, b: Path) -> bool:
     )
 
 
+def print_out_of_sync(issues: list[str]) -> None:
+    print("SKILL MIRRORS ARE OUT OF SYNC.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Do not edit generated mirror skills directly:", file=sys.stderr)
+    print("  - .claude/skills/<skill>/", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Edit the canonical skill instead:", file=sys.stderr)
+    print("  - .agents/skills/<skill>/", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Then regenerate mirrors:", file=sys.stderr)
+    print("  python3 scripts/sync_skills.py", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Detected issues:", file=sys.stderr)
+    for line in issues:
+        print(f"  - {line}", file=sys.stderr)
+
+
 def check() -> int:
     if not SOURCE.is_dir():
         print(f"ERROR: canonical source not found: {SOURCE}", file=sys.stderr)
@@ -58,9 +75,7 @@ def check() -> int:
         if not dirs_in_sync(SOURCE / name, DEST / name):
             out_of_sync.append(f"contents differ: {name}")
     if out_of_sync:
-        print("OUT OF SYNC. Run: python scripts/sync_skills.py", file=sys.stderr)
-        for line in out_of_sync:
-            print(f"  - {line}", file=sys.stderr)
+        print_out_of_sync(out_of_sync)
         return 1
     print(f"in sync: {sorted(src)}")
     return 0

@@ -3,6 +3,13 @@
 repos:
   - repo: local
     hooks:
+      - id: sync-agent-instructions-check
+        name: agent instruction mirrors in sync (AGENTS.md -> tool-specific files)
+        entry: python3 scripts/sync_agent_instructions.py --check
+        language: system
+        pass_filenames: false
+        files: ^(AGENTS\.md|CLAUDE\.md|GEMINI\.md|\.cursor/rules/project\.mdc)$
+
       - id: sync-skills-check
         name: skills mirror in sync (.agents/skills -> .claude/skills)
         entry: python3 scripts/sync_skills.py --check

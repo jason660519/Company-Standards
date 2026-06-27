@@ -30,6 +30,23 @@ def dirs_in_sync(a: Path, b: Path) -> bool:
     return all(dirs_in_sync(a / sub, b / sub) for sub in cmp.common_dirs)
 
 
+def print_out_of_sync(issues: list[str]) -> None:
+    print("SKILL MIRRORS ARE OUT OF SYNC.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Do not edit generated mirror skills directly:", file=sys.stderr)
+    print("  - .claude/skills/<skill>/", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Edit the canonical skill instead:", file=sys.stderr)
+    print("  - .agents/skills/<skill>/", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Then regenerate mirrors:", file=sys.stderr)
+    print("  python3 scripts/sync_skills.py", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Detected issues:", file=sys.stderr)
+    for line in issues:
+        print(f"  - {line}", file=sys.stderr)
+
+
 def main() -> int:
     if not SOURCE.is_dir():
         return 0  # repo ships no skills; nothing to verify
@@ -41,9 +58,7 @@ def main() -> int:
         if not dirs_in_sync(SOURCE / name, DEST / name):
             issues.append(f"contents differ: {name}")
     if issues:
-        print("OUT OF SYNC. Run: python scripts/sync_skills.py", file=sys.stderr)
-        for line in issues:
-            print(f"  - {line}", file=sys.stderr)
+        print_out_of_sync(issues)
         return 1
     print(f"skills in sync: {sorted(src)}")
     return 0

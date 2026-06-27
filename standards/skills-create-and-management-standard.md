@@ -41,7 +41,7 @@ description: <一句話講「做什麼 + 何時用」，觸發判斷靠它，要
 ```
 
 - `description` 是觸發命中率的關鍵：寫清楚「**做什麼**」與「**什麼情況該用**」，並放進使用者可能說的關鍵字。
-- 指示本體寫**穩定、可重複**的流程；把可變的專案細節留給專案 `CLAUDE.md`。
+- 指示本體寫**穩定、可重複**的流程；把可變的專案細節留給專案 `AGENTS.md`。
 
 ### 每個 skill 自己的 scripts
 
@@ -59,12 +59,31 @@ description: <一句話講「做什麼 + 何時用」，觸發判斷靠它，要
 
 1. **canonical**：`.agents/skills/<skill>/` 為唯一真相來源，工具中立，**只在這裡編輯**。
 2. **mirror**：`.claude/skills/<skill>/` 是給 Claude Code 掃描的**產生物**，**不要手改**。
-3. **用 sync script 產生鏡像**：無第三方依賴、可直接 `python` 執行、跨 OS；提供 `sync`（鏡像）與 `--check`（驗證一致、不一致 exit 1）兩模式。參考實作見本 repo [`shared/scripts/sync_skills.py`](../shared/scripts/sync_skills.py)。
+3. **用 sync script 產生鏡像**：無第三方依賴、可直接 `python3` 執行、跨 OS；提供 `sync`（鏡像）與 `--check`（驗證一致、不一致 exit 1）兩模式。參考實作見本 repo [`shared/scripts/sync_skills.py`](../shared/scripts/sync_skills.py)。
 4. **用實體 copy，不要 symlink**：symlink 在 Windows clone 需 `core.symlinks=true` + Developer Mode 才還原，否則壞成純文字檔；copy 跨 OS 都穩。
-5. **明確決定 git 策略**（二選一，寫進專案 `CLAUDE.md`）：
+5. **明確決定 git 策略**（二選一，寫進專案 `AGENTS.md`）：
    - **兩份都 commit**：clone 即可用；代價是重複內容，靠 pre-commit `--check` 保證一致。
    - **只 commit canonical、gitignore 鏡像**：git 乾淨；代價是 clone / pull 後需自行 sync。
-6. **掛 pre-commit `--check` hook**：防止改了 canonical 忘了 sync 就 commit 進不一致鏡像。團隊共用版用 `.pre-commit-config.yaml`（進 git），每位工程師 clone 後 `pre-commit install` 一次。
+6. **掛 pre-commit `--check` hook**：防止改了 canonical 忘了 sync，或直接手改 `.claude/skills/` mirror。hook 失敗時必須提示工程師改 `.agents/skills/<skill>/` 並跑 `python3 scripts/sync_skills.py`。團隊共用版用 `.pre-commit-config.yaml`（進 git），每位工程師 clone 後 `pre-commit install` 一次。
+
+### 保護機制
+
+同步方向固定為：
+
+```text
+.agents/skills/<skill>/ -> .claude/skills/<skill>/
+```
+
+不要支援從 `.claude/skills/` 反向同步回 `.agents/skills/`，也不要支援「任一份 skill 改了就同步另一份」。多向同步會讓權威來源變模糊，且可能把錯誤的 mirror 內容擴散到 canonical。
+
+正確保護層級：
+
+1. 專案 `AGENTS.md` 明確標示 `.agents/skills/` 是 canonical、`.claude/skills/` 是 mirror。
+2. `sync_skills.py --check` 比對 mirror 是否完全等同 canonical。
+3. pre-commit hook 擋下不同步內容，並提示：
+   - 不要直接修改 `.claude/skills/<skill>/`。
+   - 改 `.agents/skills/<skill>/`。
+   - 跑 `python3 scripts/sync_skills.py`。
 
 ### 名詞
 
@@ -94,6 +113,6 @@ repos:
 
 - [ ] 新 skill 建在 `.agents/skills/<skill>/`，含 `SKILL.md` + frontmatter（`name` / `description`）
 - [ ] `scripts/sync_skills.py` 存在且 `--check` 可跑
-- [ ] git 策略已決定並寫進專案 `CLAUDE.md`
+- [ ] git 策略已決定並寫進專案 `AGENTS.md`
 - [ ] `.pre-commit-config.yaml` 含 `sync-skills-check`，工程師已 `pre-commit install`
-- [ ] 專案 `CLAUDE.md` 註明「只改 canonical、改完跑 sync」
+- [ ] 專案 `AGENTS.md` 註明「只改 canonical、改完跑 sync」

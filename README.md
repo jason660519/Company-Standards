@@ -8,6 +8,7 @@
 
 | 標準 | 說明 |
 |------|------|
+| [standards/agent-instructions-standard.md](standards/agent-instructions-standard.md) | Agent instructions 的 `AGENTS.md` canonical + tool-specific mirror 機制 |
 | [standards/file-naming-standards.md](standards/file-naming-standards.md) | 檔名與目錄命名規約 |
 | [standards/git-workflow-standard.md](standards/git-workflow-standard.md) | branch / commit / push / PR 規範 + SemVer / release 政策 |
 | [standards/adr-standard.md](standards/adr-standard.md) | Architecture Decision Record 流程 |
@@ -20,6 +21,7 @@
 | 路徑 | 內容 |
 |------|------|
 | [`.editorconfig`](.editorconfig) | canonical EditorConfig，複製到專案根 |
+| [`shared/scripts/sync_agent_instructions.py`](shared/scripts/sync_agent_instructions.py) | 通用 agent instructions sync script（無依賴、跨 OS） |
 | [`shared/scripts/sync_skills.py`](shared/scripts/sync_skills.py) | 通用 skills sync script（無依賴、跨 OS） |
 | [`templates/repo-template/`](templates/repo-template/) | 新專案起手骨架 |
 | [`templates/adr/ADR-template.md`](templates/adr/ADR-template.md) | ADR 模板 |
@@ -33,26 +35,26 @@
 把本 repo 掛進專案的固定路徑、pin 在某個版本：
 
 ```bash
-git submodule add https://github.com/jason660519/Company-Standards.git standards
-git -C standards checkout v0.2.0     # pin 版本
-git commit -m "chore: vendor Company-Standards v0.2.0 as submodule"
+git submodule add https://github.com/jason660519/Company-Standards.git Company-Standards
+git -C Company-Standards checkout v0.5.0     # pin 版本
+git commit -m "chore: vendor Company-Standards v0.5.0 as submodule"
 ```
 
 升級到新版本時：
 
 ```bash
-git -C standards fetch --tags
-git -C standards checkout v0.3.0
-git commit -am "chore: bump Company-Standards -> v0.3.0"
+git -C Company-Standards fetch --tags
+git -C Company-Standards checkout vX.Y.Z
+git commit -am "chore: bump Company-Standards -> vX.Y.Z"
 ```
 
 clone 專案的人要記得 `git clone --recursive`，或 clone 後 `git submodule update --init`。
 
-專案的 `CLAUDE.md` 保持薄，只寫「本專案如何套用」並指向 submodule 內的標準，例如：
+專案的 `AGENTS.md` 保持薄，只寫「本專案如何套用」並指向 submodule 內的標準，例如：
 
 ```markdown
-本專案遵循 Company-Standards（見 ./standards），
-skills 結構依 standards/skills-management-standard.md 實作。
+本專案遵循 Company-Standards（見 ./Company-Standards），
+agent instructions 結構依 Company-Standards/standards/agent-instructions-standard.md 實作。
 ```
 
 ### 方式 B — 共用 pre-commit hooks（可執行規則）
@@ -62,8 +64,9 @@ skills 結構依 standards/skills-management-standard.md 實作。
 ```yaml
 repos:
   - repo: https://github.com/jason660519/Company-Standards
-    rev: v0.4.0
+    rev: v0.5.0
     hooks:
+      - id: sync-agent-instructions-check
       - id: sync-skills-check   # .claude/skills 是否與 .agents/skills 一致
 ```
 
@@ -82,5 +85,5 @@ repos:
 | 層級 | 放哪 | 例子 |
 |------|------|------|
 | 個人偏好（跨專案、私人） | `~/.claude/CLAUDE.md` | 語氣、工具偏好 |
-| **公司標準（跨專案、共用）** | **本 repo** | 命名規約、skills 機制 |
-| 專案實作（單一 repo） | 該 repo 的 `CLAUDE.md` / ADR | 實際路徑、專案特例 |
+| **公司標準（跨專案、共用）** | **本 repo** | 命名規約、agent instructions、skills 機制 |
+| 專案實作（單一 repo） | 該 repo 的 `AGENTS.md` / ADR | 實際路徑、專案特例 |

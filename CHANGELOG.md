@@ -2,6 +2,17 @@
 
 採語意化版本（SemVer）。每次發布請更新本檔與 [`VERSION`](VERSION)，並打對應 git tag `vX.Y.Z`。
 
+## [0.5.0] - 2026-06-28
+
+### Added
+- `standards/agent-instructions-standard.md`：規定 `AGENTS.md` 作為 agent instructions canonical，`CLAUDE.md`、`GEMINI.md`、`.cursor/rules/project.mdc` 作為 tool-specific mirrors。
+- `shared/scripts/sync_agent_instructions.py`：通用 agent instructions sync script。
+- `hooks/sync_agent_instructions_check.py` + `.pre-commit-hooks.yaml` hook `sync-agent-instructions-check`。
+
+### Changed
+- repo template 改為 `AGENTS.md` canonical，並產生 Claude / Gemini / Cursor mirrors。
+- 建議 consuming repo 將 Company-Standards submodule 放在 `Company-Standards/`，與 GitHub repo 名稱一致。
+
 ## [0.4.0] - 2026-06-28
 
 ### Added
